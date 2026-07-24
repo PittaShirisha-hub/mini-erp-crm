@@ -58,7 +58,8 @@ export const getPaymentById = async (
   res: Response
 ): Promise<void> => {
   try {
-    const payment = await paymentService.getPaymentById(req.params.id);
+    const id = String(req.params.id);
+    const payment = await paymentService.getPaymentById(id);
 
     if (!payment) {
       res.status(404).json({

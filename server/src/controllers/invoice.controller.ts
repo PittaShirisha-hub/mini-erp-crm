@@ -57,7 +57,8 @@ export const getInvoiceById = async (
   res: Response
 ): Promise<void> => {
   try {
-    const invoice = await invoiceService.getInvoiceById(req.params.id);
+    const id = String(req.params.id);
+    const invoice = await invoiceService.getInvoiceById(id);
 
     if (!invoice) {
       res.status(404).json({
