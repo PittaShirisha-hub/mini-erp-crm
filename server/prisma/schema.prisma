@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(SALES)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  followUps      CustomerFollowUp[]
+  challans       SalesChallan[]
+  purchases      Purchase[]
+  invoices       Invoice[]
+  stockMovements StockMovement[]
+  payments       Payment[]
+}
+
+model Customer {
+  id           String         @id @default(cuid())
+  customerName String
+  mobile       String
+  email        String         @unique
+  businessName String
+  gstNumber    String?
+  customerType CustomerType
+  address      String
+  status       CustomerStatus @default(LEAD)
+  followUpDate DateTime?
+  notes        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  followUps CustomerFollowUp[]
+  challans  SalesChallan[]
+  invoices  Invoice[]
+}
+
+model CustomerFollowUp {
+  id           String   @id @default(cuid())
+  note         String
+  followUpDate DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  customerId  String
+  createdById String
+
+  customer  Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdBy User     @relation(fields: [createdById], references: [id])
+}
+
+model Product {
+  id           String  @id @default(cuid())
+  name         String
+  sku          String  @unique
+  category     String
+  unitPrice    Float
+  currentStock Int     @default(0)
+  minimumStock Int
+  warehouse    String
+  description  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  challanItems   SalesChallanItem[]
+  purchaseItems  PurchaseItem[]
+  invoiceItems   InvoiceItem[]
+  stockMovements StockMovement[]
+}
+
+model StockMovement {
+  id           String       @id @default(cuid())
+  quantity     Int
+  movementType MovementType
+  reason       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId   String
+  createdById String
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdBy User    @relation(fields: [createdById], references: [id])
+}
+
+model SalesChallan {
+  id            String        @id @default(cuid())
+  challanNumber String        @unique
+  totalQuantity Int
+  status        ChallanStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customerId  String
+  createdById String
+
+  customer  Customer @relation(fields: [customerId], references: [id])
+  createdBy User     @relation(fields: [createdById], references: [id])
+
+  items SalesChallanItem[]
+}
+
+model SalesChallanItem {
+  id          String @id @default(cuid())
+  productName String
+  sku         String
+  unitPrice   Float
+  quantity    Int
+
+  productId String
+  challanId String
+
+  product Product      @relation(fields: [productId], references: [id])
+  challan SalesChallan @relation(fields: [challanId], references: [id], onDelete: Cascade)
+}
+
+model Supplier {
+  id             String         @id @default(cuid())
+  supplierName   String
+  contactPerson  String
+  phone          String
+  email          String?        @unique
+  gstNumber      String?        @unique
+  address        String
+  status         SupplierStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchases Purchase[]
+}
+
+model Purchase {
+  id             String @id @default(cuid())
+  purchaseNumber String @unique
+  totalQuantity  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  supplierId  String
+  createdById String
+
+  supplier  Supplier @relation(fields: [supplierId], references: [id])
+  createdBy User     @relation(fields: [createdById], references: [id])
+
+  items PurchaseItem[]
+}
+
+model PurchaseItem {
+  id          String @id @default(cuid())
+  productName String
+  sku         String
+  unitPrice   Float
+  quantity    Int
+
+  purchaseId String
+  productId  String
+
+  purchase Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id])
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  totalAmount   Float
+  status        InvoiceStatus @default(UNPAID)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customerId  String
+  createdById String
+
+  customer  Customer @relation(fields: [customerId], references: [id])
+  createdBy User     @relation(fields: [createdById], references: [id])
+
+  items    InvoiceItem[]
+  payments Payment[]
+}
+
+model InvoiceItem {
+  id          String @id @default(cuid())
+  productName String
+  sku         String
+  unitPrice   Float
+  quantity    Int
+  total       Float
+
+  invoiceId String
+  productId String
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  paymentNumber String        @unique
+  amount        Float
+  paymentDate   DateTime      @default(now())
+  method        PaymentMethod
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  invoiceId   String
+  createdById String
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  createdBy User    @relation(fields: [createdById], references: [id])
+}
+
+enum Role {
+  ADMIN
+  SALES
+  WAREHOUSE
+  ACCOUNTS
+}
+
+enum CustomerType {
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+}
+
+enum CustomerStatus {
+  LEAD
+  ACTIVE
+  INACTIVE
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+enum ChallanStatus {
+  DRAFT
+  CONFIRMED
+  CANCELLED
+}
+
+enum SupplierStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum InvoiceStatus {
+  UNPAID
+  PAID
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  CARD
+  BANK_TRANSFER
+}
