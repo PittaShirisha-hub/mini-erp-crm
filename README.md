@@ -203,6 +203,16 @@ MINI-ERP-CRM/
 
 ## Screenshots
 
+
+### Dashboard
+
+#### Dashboard - Overview
+![Dashboard 1](docs/Screenshots/dashboard/dashboard1.png)
+
+#### Dashboard - Analytics
+![Dashboard 2](docs/Screenshots/dashboard/dashboard2.png)
+
+
 ### Login
 
 ![Login](docs/Screenshots/login/loginpage.png)
