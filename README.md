@@ -283,13 +283,13 @@ MINI-ERP-CRM/
 
 ### System Architecture
 
-![Architecture](docs/Screenshots/Architecture.png)
+![Architecture](docs/Architecture.png)
 
 ---
 
 ### Database ER Diagram
 
-![ER Diagram](docs/Screenshots/Database-ERD.png)
+![ER Diagram](docs/Database-ERD.png)
 
 --------
 
