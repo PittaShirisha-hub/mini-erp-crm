@@ -6,15 +6,15 @@ A full-stack ERP & CRM Management System developed as a Full Stack Developer Cas
 
 # Live Demo
 
-**Frontend:** https://your-frontend-url.vercel.app
+**Frontend:** https://mini-erp-crm-ten.vercel.app/
 
-**Backend:** https://your-backend-url.onrender.com
+**Backend:** https://mini-erp-crm-r5pt.onrender.com/
 
 ---
 
 # GitHub Repository
 
-https://github.com/your-username/mini-erp-crm
+https://github.com/PittaShirisha-hub/mini-erp-crm
 
 ---
 
@@ -149,30 +149,146 @@ Supplier Fields
 # Project Structure
 
 ```
-mini-erp-crm
+MINI-ERP-CRM/
 │
-├── client
-│   ├── src
-│   ├── public
-│   └── package.json
-│
-├── server
-│   ├── prisma
-│   ├── src
+├── client/                        # React + TypeScript + Vite Frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── features/
+│   │   ├── hooks/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   └── index.css
+│   ├── .env
 │   ├── package.json
-│   └── tsconfig.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── README.md
 │
-└── README.md
+├── server/                        # Node.js + Express + TypeScript Backend
+│   ├── prisma/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   ├── app.ts
+│   │   └── server.ts
+│   ├── .env
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── nodemon.json
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+├── package.json
+└── package-lock.json
 ```
 
 ---
+
+
+## Screenshots
+
+### Login
+
+![Login](docs/Screenshots/login/loginpage.png)
+
+![Login Successful](docs/Screenshots/login/loginpagesuccessful.png)
+
+---
+
+### Register
+
+![Register](docs/Screenshots/register/registerpage1.png)
+
+![Register Successful](docs/Screenshots/register/registerpagesuccessful.png)
+
+---
+
+### Customer Management
+
+![Customer Page](docs/Screenshots/customer/customerpage.png)
+
+![Customer List](docs/Screenshots/customer/customerlist.png)
+
+---
+
+### Product Management
+
+![Product Page](docs/Screenshots/product/productpage1.png)
+
+![Product List](docs/Screenshots/product/productlist.png)
+
+---
+
+### Supplier Management
+
+![Supplier Page](docs/Screenshots/supplier/supplierpage1.png)
+
+---
+
+### Purchase Management
+
+![Purchase Page](docs/Screenshots/purchase/purchasepage1.png)
+
+---
+
+### Invoice Management
+
+![Invoice Page](docs/Screenshots/invoice/invoicepage1.png)
+
+---
+
+### Payment Management
+
+![Payment Page](docs/Screenshots/payment/paymentpage1.png)
+
+---
+
+### Reports
+
+![Reports](docs/Screenshots/reports/reportpage1.png)
+
+---
+
+### Search
+
+![Search](docs/Screenshots/search/searchpage.png)
+
+---
+
+### System Architecture
+
+![Architecture](docs/Screenshots/Architecture.png)
+
+---
+
+### Database ER Diagram
+
+![ER Diagram](docs/Screenshots/Database-ERD.png)
+
+--------
 
 # Installation
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/mini-erp-crm.git
+git clone https://github.com/PittaShirisha-hub/mini-erp-crm
 ```
 
 ```
@@ -196,11 +312,10 @@ npm install
 Create a `.env`
 
 ```env
-DATABASE_URL=your_neon_database_url
-
-JWT_SECRET=your_secret_key
-
+DATABASE_URL=postgresql://username:password@host:5432/database_name
+JWT_SECRET=example_jwt_secret
 PORT=5000
+NODE_ENV=development
 ```
 
 Generate Prisma Client
